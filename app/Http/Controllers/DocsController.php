@@ -53,8 +53,8 @@ class DocsController extends Controller
         }
 
         $sectionPage = $page ?: 'installation';
+        // echo $version;die();
         $content = $this->docs->get($version, $sectionPage);
-
         if (is_null($content)) {
             return response()->view('docs', [
                 'title' => 'Page not found',

@@ -15,5 +15,11 @@ Route::get('partners', 'PartnersController@index');
 Route::get('partner/{partner}', 'PartnersController@show');
 
 Route::get('/', function () {
-    return view('marketing');
+    // return view('marketing');
+    // dd(App\User::inRandomOrder()->first()->id);
 });
+
+Route::get('/post', 'PostController@index');
+Route::get('/post/create', 'PostController@create');
+Route::post('/post/save', 'PostController@store')->name('post.store');
+Route::resource('article', 'ArticleController');
