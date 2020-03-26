@@ -14,17 +14,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //select * from articles where user_id = 1 and (year(created_at) = 2020 or year(updated_at) = 2020));
-        $article = Article::where('user_id', 1)
-                    ->where(function ($query) {
-                      return $query->WhereYear('created_at', 2020)
-                             ->orWhereYear('closed_at', 2020) ;
-                    })
-                
-                ->get();
-               // dd($article); 
-        dd($article->count());        
-
+        $article =Article::withoutGlobalScope(App\Scope\ArticleGlobalScope::class)->get();
+        dd($article->count());
     }
 
     /**
