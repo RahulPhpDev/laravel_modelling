@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Scope\ArticleGlobalScope;
 class Article extends Model
 {
+    public $append = 'diff_in_update_days';
+
     protected static function boot() {
     	parent::boot();
     	static::addGlobalScope(new ArticleGlobalScope());
@@ -18,10 +20,12 @@ class Article extends Model
 
 
     public function scopeCurrentYearArticle($query, $year = 2020) {
-    	// dd(date('Y'));
     	return $query->whereUserId(1)->whereYear('created_at', $year);
     }
 
+    public function getDiffInUpdateDaysAttribute() {
+        return $this->created_at->diffIndays($this->updated_at); 
+    }
 
 
 }

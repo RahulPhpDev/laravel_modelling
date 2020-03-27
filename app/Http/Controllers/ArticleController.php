@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
+use App\Scope\ArticleGlobalScope;
 use DB;
+use  App\User;
 class ArticleController extends Controller
 {
     /**
@@ -15,18 +17,24 @@ class ArticleController extends Controller
     public function index()
     {
 
-        // DB::table('users')
-        //              ->select(DB::raw('count(*) as user_count, status'))
-        //              ->where('status', '<>', 1)
-        //              ->groupBy('status')
-        //              ->get();
-       // $data =  DB::table('articles')->select(DB::raw('*'));
-        //$results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = '$someVariable'") );
+          // Job::query()->withCount([
+          //       'charges as total_application_fee' => function (Builder $query) {
+          //           $query->select(DB::raw('ROUND(SUM(charges.application_fee), 2)'));
+          //       },
+          //   ])
 
-       $data =  DB::select(DB::raw('select *, DATEDIFF(updated_at,created_at) as daydiff from articles'));
-       dd($data);
-        $article =Article::withoutGlobalScope(App\Scope\ArticleGlobalScope::class)->get();
-        dd($article->count());
+        $articles = Article::withoutGlobalScope(ArticleGlobalScope::class)
+
+                    ->get();
+                    // dd($articles);
+return view('article.index', compact('articles'));
+// dd($articles);
+//        $title =  $articles->filter(function($article) {
+//             return strlen($article->title) > 6;
+//         })->map(function($article) {
+//             return $article->title;
+//         });
+//         dd($title);
     }
 
     /**
@@ -36,7 +44,17 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::pluck('name', 'id')
+                ->shuffle()
+                ->tap(function($user) {
+                    dd($user);
+                    // info($user->name);
+                })
+                 ->push( '--Select Name--','name');
+        // $users = User::all()->shuffle()->chunk(5);
+        // $users = User::select(DB::raw('name', 'id')->prepend( '--Select Name--','name');
+        // dd($users);
+        return view('article.create', compact('users'));
     }
 
     /**
