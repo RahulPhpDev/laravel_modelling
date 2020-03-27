@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
-
+use App\Scope\ArticleGlobalScope;
 class ArticleController extends Controller
 {
     /**
@@ -82,5 +82,27 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         //
+    }
+
+    public function search(Request $request) 
+    {
+        /*
+        $query = Article::when(
+            $request->has('id')
+        );
+        if($request->has('id')) {
+            $query->where('id', $request->id);
+        }
+       $article =  $query->get();
+       */
+
+       $articles = Article::withoutGlobalScope(ArticleGlobalScope::class)->when(request('id'), function($query) {
+           return $query->where('id', request('id'));
+       })
+       ->when(request('title'), function($query) {
+           return $query->orWhere('title', request('title'));
+       })
+       ->get(); 
+       dd($articles);
     }
 }
