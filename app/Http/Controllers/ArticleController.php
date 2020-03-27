@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
-
+use DB;
 class ArticleController extends Controller
 {
     /**
@@ -14,6 +14,17 @@ class ArticleController extends Controller
      */
     public function index()
     {
+
+        // DB::table('users')
+        //              ->select(DB::raw('count(*) as user_count, status'))
+        //              ->where('status', '<>', 1)
+        //              ->groupBy('status')
+        //              ->get();
+       // $data =  DB::table('articles')->select(DB::raw('*'));
+        //$results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = '$someVariable'") );
+
+       $data =  DB::select(DB::raw('select *, DATEDIFF(updated_at,created_at) as daydiff from articles'));
+       dd($data);
         $article =Article::withoutGlobalScope(App\Scope\ArticleGlobalScope::class)->get();
         dd($article->count());
     }
