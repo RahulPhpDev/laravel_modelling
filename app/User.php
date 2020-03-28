@@ -49,4 +49,21 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+     /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function aadhar()
+    {
+        info('Aadhar Relatioship trigger');
+        return $this->belongsTo(Aadhar::class);
+    }
+     /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function role()
+    {
+        return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+
 }
