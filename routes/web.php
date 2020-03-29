@@ -23,3 +23,6 @@ Route::get('/post', 'PostController@index');
 Route::get('/post/create', 'PostController@create');
 Route::post('/post/save', 'PostController@store')->name('post.store');
 Route::resource('article', 'ArticleController');
+
+Route::get('/city', 'CityController@index');
+Route::get('/city/save', 'CityController@save');
